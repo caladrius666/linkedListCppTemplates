@@ -82,7 +82,6 @@ tNode<DataType> * insert_node_back(DataType data)
     return p;
 }
 
-
 template<typename DataType>
 void list_insert_back(List<DataType> &lst, const DataType &value)
 {
