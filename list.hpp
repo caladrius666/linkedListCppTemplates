@@ -3,8 +3,6 @@
 
 #include <ostream>
 
-#define nullptr     NULL
-
 
 template<typename DataType>
 struct tNode {
@@ -15,18 +13,10 @@ struct tNode {
 
 template<typename DataType>
 struct List {
-    tNode<DataType> *begin;
-    tNode<DataType> *end;
-    int size;
+    tNode<DataType> *begin = nullptr;
+    tNode<DataType> *end = nullptr;
+    int size = 0;
 };
-
-template<typename DataType>
-void list_init(List<DataType> &lst)
-{
-    lst.begin = nullptr;
-    lst.end = nullptr;
-    lst.size = 0;
-}
 
 template<typename DataType>
 tNode<DataType> * insert_node(tNode<DataType> *p_begin, DataType data)
@@ -118,10 +108,13 @@ tNode<DataType>* getprev(List<DataType> & l, int i)
 }
 
 template<typename DataType>
-bool list_insert_i(List<DataType> & l, int i, DataType data)
+void list_insert_i(List<DataType> & l, int i, DataType data)
 {
     if (i < 0 or i >= l.size)
-        return false;
+    {
+        std::cout << "list_insert_i: Out of range!" << std::endl;
+        return;
+    }
     auto *newnode = new tNode<DataType>;
     newnode->data = data;
     tNode<DataType> *current = get_i(l, i);
@@ -137,11 +130,10 @@ bool list_insert_i(List<DataType> & l, int i, DataType data)
         prev->next = newnode;
         l.size++;
     }
-    return true;
 }
 
 template<typename DataType>
-bool list_swap(List<DataType> & l, int i, int j)
+void list_swap(List<DataType> & l, int i, int j)
 {
     if (i > j){
         int tmp = i;
@@ -156,10 +148,11 @@ bool list_swap(List<DataType> & l, int i, int j)
     tNode<DataType> *nodejnext = getnext(l, j);
     if (i < 0 or i >= l.size  or j < 0 or j >= l.size)
     {
-        return false;
+        std::cout << "list_swap: Out of range!" << std::endl;
+        return;
     }
     if (i == j)
-        return true;
+        return;
     if (j - i != 1){
         if (nodei == l.begin)
         {
@@ -191,14 +184,16 @@ bool list_swap(List<DataType> & l, int i, int j)
         if (nodej == l.end)
             l.end = nodei;
     }
-    return true;
 }
 
 template<typename DataType>
-bool list_remove(List<DataType> & l, int i)
+void list_remove(List<DataType> & l, int i)
 {
     if (i < 0 or i >= l.size)
-        return false;
+    {
+        std::cout << "list_swap: Out of range!" << std::endl;
+        return;
+    }
     tNode<DataType> *nodei = get_i(l ,i);
     tNode<DataType> *nodeiprev = getprev(l, i);
     tNode<DataType> *nodeinext = getnext(l, i);
@@ -210,7 +205,6 @@ bool list_remove(List<DataType> & l, int i)
         nodeiprev->next = nodeinext;
     delete nodei;
     l.size--;
-    return true;
 }
 
 template<typename DataType>
